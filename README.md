@@ -21,7 +21,7 @@ It'll probably warn you about the SSL certificate being bogus (self-signed), but
 Here it breaks down each piece:
 
 > openssl: This is the command-line tool for using OpenSSL, a robust, full-featured open-source toolkit that implements the Secure Sockets Layer (SSL) and Transport Layer Security (TLS) protocols.
-
+>
 > req: This is a sub-command for OpenSSL and stands for "request." It's used for creating a new certificate signing request (CSR), but in this case, it's also used to create a new self-signed certificate.
 > 
 > -newkey rsa:2048: This option tells OpenSSL to create a new private key using the RSA algorithm with a key length of 2048 bits.

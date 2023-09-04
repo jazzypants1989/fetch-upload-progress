@@ -1,6 +1,9 @@
 # fetch-upload-progress
 Testing out how to get a progress event on uploads from the fetch API
 
+**NOTE**
+This only works in Google Chrome.
+
 # Set-up
 
 1. clone repo `git clone https://github.com/jazzypants1989/fetch-upload-progress/` 

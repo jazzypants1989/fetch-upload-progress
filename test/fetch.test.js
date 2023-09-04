@@ -1,5 +1,5 @@
 import { expect, test } from "vitest"
-import { enhancedFetch } from "../fetch" // Assuming the function is in 'enhancedFetch.js'
+import { enhancedFetch } from "../fetch"
 
 test("should fetch data successfully", async () => {
   const response = await enhancedFetch(

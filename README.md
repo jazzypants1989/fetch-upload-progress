@@ -21,16 +21,27 @@ It'll probably warn you about the SSL certificate being bogus (self-signed), but
 Here it breaks down each piece:
 
 > openssl: This is the command-line tool for using OpenSSL, a robust, full-featured open-source toolkit that implements the Secure Sockets Layer (SSL) and Transport Layer Security (TLS) protocols.
+
 > req: This is a sub-command for OpenSSL and stands for "request." It's used for creating a new certificate signing request (CSR), but in this case, it's also used to create a new self-signed certificate.
+> 
 > -newkey rsa:2048: This option tells OpenSSL to create a new private key using the RSA algorithm with a key length of 2048 bits.
+>
 > rsa: Specifies the algorithm to use for the key (RSA in this case).
+> 
 >2048: Specifies the number of bits in the key. 2048 is currently recommended for good security.
+> 
 >-new: This option specifies that a new CSR will be created. In this context, it's part of creating a new self-signed certificate.
+> 
 >-nodes: This stands for "no DES," which means that the private key will not be encrypted with a passphrase. This is often necessary for automated processes, but it means that anyone with access to the key.pem file will have access to the unencrypted private key.
+> 
 >-x509: This option tells OpenSSL to create a self-signed certificate instead of generating a certificate signing request (CSR).
+> 
 >-days 3650: This specifies the number of days for which the certificate will be valid. Here, 3650 days means the certificate will be valid for 10 years.
+> 
 >-keyout key.pem: This option tells OpenSSL where to save the private key. In this case, it will be saved in a file named key.pem.
+> 
 >-out cert.pem: This option specifies the name of the output file for the new certificate. Here, the certificate will be saved in a file named cert.pem.
+> 
 >So, in summary, this command will generate a new RSA private key with 2048 bits, create a new self-signed X.509 certificate that is valid for 10 years, save the private key in key.pem, and save the certificate in cert.pem. The private key will not be encrypted.
 
 # Node?

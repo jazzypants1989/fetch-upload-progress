@@ -2,7 +2,7 @@
 Testing out how to get a progress event on uploads from the fetch API
 
 **NOTE**
-This only works in Google Chrome.
+This only works in Chromium browsers.
 
 # Set-up
 

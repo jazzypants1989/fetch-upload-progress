@@ -1,93 +1,68 @@
-// function createProgressStream(totalSize, onProgress) {
-//   let totalBytesSent = 0;
-//   return new TransformStream({
-//     transform(chunk, controller) {
-//       totalBytesSent += chunk.length;
-//       const percentage = ((totalBytesSent / totalSize) * 100).toFixed(2);
-//       onProgress(percentage);
-//       controller.enqueue(chunk);
-//     }
-//   });
-// }
+/**
+ * @param {number} totalSize - The total size of the request payload
+ * @param {function} onProgress - Callback function for tracking progress
+ * @returns {TransformStream} - A transform stream
+ * @example
+ * const progressStream = createProgressStream(13, onProgress)
+ */
+function createProgressStream(totalSize, onProgress) {
+  let totalBytesSent = 0
+  return new TransformStream({
+    transform(chunk, controller) {
+      totalBytesSent += chunk.length
+      const percentage = ((totalBytesSent / totalSize) * 100).toFixed(2)
+      onProgress(percentage)
+      controller.enqueue(chunk)
+    },
+  })
+}
 
-// export function enhancedFetch(url, options = {}) {
-//   const abortController = new AbortController();
-//   const signal = abortController.signal;
-//   options.signal = signal;
+/**
+ * @typedef {Object} ExtendedRequestInit
+ * @extends RequestInit
+ * @property {number} [size] - The size of the request payload
+ * @property {function} [onProgress] - Callback function for tracking progress
+ */
 
-//   if (options.body && typeof options.body.pipeThrough === 'function') {
-//     const totalSize = options.size || 0; // Replace with actual size if available
-//     const progressStream = createProgressStream(totalSize, options.onProgress || (() => {}));
-//     options.body = options.body.pipeThrough(progressStream);
-//   }
+/**
+ * @param {string} url - The URL to fetch
+ * @param {ExtendedRequestInit} [options] - The fetch options
+ * @returns {Promise<Response> & {abort?: function}}
+ * @example
+ * const response = await enhancedFetch("https://httpbin.org/post", {
+ *  method: "POST",
+ * body: stream,
+ * duplex: "half", // Use half-duplex mode to receive the response
+ * size: 13, // Size of 'Hello, world!' in bytes
+ * onProgress, // Pass the onProgress callback
+ * })
+ *
+ * function onProgress(percentage) {
+ * console.log(`Upload progress: ${percentage}%`)
+ * }
+ */
+export function enhancedFetch(url, options = {}) {
+  const abortController = new AbortController()
+  const signal = abortController.signal
+  options.signal = signal
 
-//   let fetchPromise = fetch(url, options);
+  if (options.body && typeof options.body.pipeThrough === "function") {
+    const totalSize = options.size || 0 // Replace with actual size if available
+    const progressStream = createProgressStream(
+      totalSize,
+      options.onProgress || (() => {})
+    )
+    options.body = options.body.pipeThrough(progressStream)
+  }
 
-//   fetchPromise.abort = function() {
-//     abortController.abort();
-//   };
+  /**
+   * @type {Promise<Response> & {abort?: function}} fetchPromise
+   */
+  let fetchPromise = fetch(url, options)
 
-//   return fetchPromise;
-// }
+  fetchPromise.abort = function () {
+    abortController.abort()
+  }
 
-// export function enhancedFetch(url, options = {}) {
-//   const abortController = new AbortController();
-//   const signal = abortController.signal;
-//   options.signal = signal;
-
-//   let fetchPromise = fetch(url, options);
-
-//   fetchPromise.abort = function() {
-//     abortController.abort();
-//   };
-
-//   return fetchPromise;
-// }
-
-// Readable Stream
-// export function enhancedFetch(url, options = {}) {
-//   const abortController = new AbortController();
-//   const signal = abortController.signal;
-//   options.signal = signal;
-
-//   let fetchPromise = fetch(url, options);
-
-//   fetchPromise = fetchPromise.then((response) => {
-//     return new Response(response.body, response);
-//   });
-
-//   fetchPromise.abort = function () {
-//     abortController.abort();
-//   };
-
-//   return fetchPromise;
-// }
-
-// Transform stream
-// export function enhancedFetch(url, options = {}) {
-//   const abortController = new AbortController();
-//   const signal = abortController.signal;
-//   options.signal = signal;
-
-//   let fetchPromise = fetch(url, options);
-
-//   fetchPromise = fetchPromise.then((response) => {
-//     if (response.body && typeof response.body.pipeTo === 'function') {
-//       const { readable, writable } = new TransformStream();
-//       response.body.pipeTo(writable);
-//       return new Response(readable, response);
-//     }
-//     console.error("No native pipeTo method. You're probably on an old version of Node. Sorry, no abort method for you!")
-//     return response;
-//   }).catch((error) => {
-//     console.log('Fetch operation failed:', error);
-//     throw error;
-//   });
-
-//   fetchPromise.abort = function () {
-//     console.log('Abort called');
-//     abortController.abort();
-//   };
-
-//   return fetchPromise;
-// }
+  return fetchPromise
+}

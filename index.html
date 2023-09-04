@@ -23,7 +23,7 @@
         let totalBytesSent = 0
 
         const progressStream = new TransformStream({
-          async transform(chunk, controller) {
+          transform(chunk, controller) {
             totalBytesSent += chunk.length
             const percentage = ((totalBytesSent / totalSize) * 100).toFixed(2)
             document.getElementById(

@@ -13,12 +13,15 @@ This only works in Chromium browsers. That's why no one does this.**
 
 1. clone repo `git clone https://github.com/jazzypants1989/fetch-upload-progress/`
 2. install dependencies `npm install`
-3. Set up SSL cert `openssl req -newkey rsa:2048 -new -nodes -x509 -days 3650 -keyout key.pem -out cert.pem` ( Honestly, ChatGPT gave me that line and I barely understand what it is doing. Use at your own risk.)
-4. Run server and click link in console: `npm run start`
+3. Set up SSL cert `openssl req -newkey rsa:2048 -new -nodes -x509 -days 3650 -keyout key.pem -out cert.pem`
+   ( Honestly, ChatGPT gave me that line and I barely understand what it is doing. Use at your own risk.)
+5. Run server and click link in console: `npm run start`
 
 It'll probably warn you about the SSL certificate being bogus (self-signed), but there shouldn't be any real danger here.
 
-Here it breaks down each piece:
+# What's up with the SSL certificate?
+
+Chrome and Firefox require you to have one to use HTTP/2. Here's ChatGPT breaking down that command line prompt piece by piece:
 
 > openssl: This is the command-line tool for using OpenSSL, a robust, full-featured open-source toolkit that implements the Secure Sockets Layer (SSL) and Transport Layer Security (TLS) protocols.
 >

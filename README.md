@@ -4,9 +4,9 @@ Testing out how to get a progress event on uploads from the fetch API
 **NOTE
 This only works in Chromium browsers. That's why no one does this.**
 
-[https://developer.chrome.com/articles/fetch-streaming-requests/](here's more information about streaming fetch requests)
+[here's more information about streaming fetch requests](https://developer.chrome.com/articles/fetch-streaming-requests/)
 
-[https://web.dev/streams/](And, here's more information about WHATWG streams in general.)
+[And, here's more information about WHATWG streams in general](https://web.dev/streams/)
 
 
 
